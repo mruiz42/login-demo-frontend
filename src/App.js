@@ -5,16 +5,17 @@ import axios from 'axios';
 import Login from './Login';
 import Dashboard from './Dashboard';
 import Home from './Home';
-
+import Register from './Register';
+import Logout from './Logout';
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
-import { getToken, removeUserSession, setUserSession } from './Utils/Common';
+import { isLogin, removeUserSession, setUserSession } from './Utils/Common';
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    const token = getToken();
+    const token = isLogin();
     if (!token) {
       return;
     }
@@ -29,7 +30,7 @@ function App() {
     });
   }, []);
 
-  if (authLoading && getToken()) {
+  if (authLoading && isLogin()) {
     return <div className="content">Checking Authentication...</div>
   }
 
@@ -39,14 +40,18 @@ function App() {
         <div>
           <div className="header">
             <NavLink exact activeClassName="active" to="/">Home</NavLink>
-            <NavLink activeClassName="active" to="/login">Login</NavLink><small>(Access without token only)</small>
-            <NavLink activeClassName="active" to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
+            <NavLink restricted={false} to="/register">Register</NavLink><small>(Access without token only)</small>
+            <NavLink restricted={false} to="/login">Login</NavLink><small>(Access without token only)</small>
+            <NavLink restricted={true} to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
+            <NavLink restricted={true} to="/logout">Logout</NavLink><small>(Access with token only)</small>
           </div>
           <div className="content">
             <Switch>
               <Route exact path="/" component={Home} />
               <PublicRoute path="/login" component={Login} />
+              <PublicRoute path="/register" component={Register} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
+              <PrivateRoute path="/logout" component={Logout} />
             </Switch>
           </div>
         </div>

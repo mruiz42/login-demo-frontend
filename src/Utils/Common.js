@@ -6,7 +6,7 @@ export const getUser = () => {
 }
 
 // return the token from the session storage
-export const getToken = () => {
+export const isLogin = () => {
   return sessionStorage.getItem('token') || null;
 }
 

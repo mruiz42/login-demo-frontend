@@ -4,7 +4,7 @@ import { setUserSession } from './Utils/Common';
 
 function Login(props) {
   const [loading, setLoading] = useState(false);
-  const username = useFormInput('');
+  const email = useFormInput('');
   const password = useFormInput('');
   const [error, setError] = useState(null);
 
@@ -12,7 +12,7 @@ function Login(props) {
   const handleLogin = () => {
     setError(null);
     setLoading(true);
-    axios.post('http://localhost:4000/login', { username: username.value, password: password.value })
+    axios.post('http://192.168.0.100:4000/login', { email: email.value, password: password.value })
         .then(response => { setLoading(false);
         setUserSession(response.data.token, response.data.user);
         props.history.push('/dashboard');
@@ -28,8 +28,8 @@ function Login(props) {
     <div>
       Login<br /><br />
       <div>
-        Username<br />
-        <input type="text" {...username} autoComplete="new-password" />
+        E-mail<br />
+        <input type="text" {...email} autoComplete="new-password" />
       </div>
       <div style={{ marginTop: 10 }}>
         Password<br />
