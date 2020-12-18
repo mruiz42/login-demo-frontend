@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { setUserSession } from './Utils/Common';
 
+const SERVER = process.env.REACT_APP_API_URL;
+
+console.log(SERVER)
+console.log(process.env)
 function Login(props) {
   const [loading, setLoading] = useState(false);
   const email = useFormInput('');
@@ -12,7 +16,7 @@ function Login(props) {
   const handleLogin = () => {
     setError(null);
     setLoading(true);
-    axios.post('http://192.168.0.100:4000/login', { email: email.value, password: password.value })
+    axios.post(SERVER + '/login', { email: email.value, password: password.value })
         .then(response => { setLoading(false);
         setUserSession(response.data.token, response.data.user);
         props.history.push('/dashboard');

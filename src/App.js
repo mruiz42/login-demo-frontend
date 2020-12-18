@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import axios from 'axios';
-
 import Login from './Login';
 import Dashboard from './Dashboard';
 import Home from './Home';
@@ -10,6 +9,7 @@ import Logout from './Logout';
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
 import { isLogin, removeUserSession, setUserSession } from './Utils/Common';
+require('dotenv').config();
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);

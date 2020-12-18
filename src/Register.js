@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+const SERVER = process.env.REACT_APP_API_URL;
+console.log(SERVER)
+console.log(process.env)
+
 function Register(props) {
     const [loading, setLoading] = useState(false);
     const email = useFormInput('');
@@ -15,7 +19,7 @@ function Register(props) {
         setError(null);
         setLoading(true);
 
-        axios.post('http://192.168.0.100:4000/register', {
+        axios.post(SERVER + '/register', {
             username: username.value, 
             name: name.value, 
             email: email.value,
