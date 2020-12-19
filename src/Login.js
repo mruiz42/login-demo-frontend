@@ -23,8 +23,13 @@ function Login(props) {
     })
         .catch(error => {
         setLoading(false);
-        if (error.response.status === 401) setError(error.response.data.message);
-        else setError("Something went wrong. Please try again later.");
+        // TODO bandaid fix after &&
+        if (error.response.status === 403 && error.response !== undefined) {
+            setError(error.response.data.message);
+        }
+        else {
+            setError("Something went wrong. Please try again later.");
+        }
     });
   }
 

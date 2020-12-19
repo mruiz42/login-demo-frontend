@@ -20,7 +20,8 @@ function App() {
       return;
     }
 
-    axios.post(`http://localhost:4000/verify?token=${token}`).then(response => {
+    // axios.post(`http://localhost:4000/verify?token=${token}`).then(response => {
+    axios.post(`http://localhost:4000/login`).then(response => {
       setUserSession(response.data.token, response.data.user);
       setAuthLoading(false);
       console.log(response)
