@@ -12,53 +12,53 @@ import { isLogin, removeUserSession, setUserSession } from './Utils/Common';
 require('dotenv').config();
 
 function App() {
-  const [authLoading, setAuthLoading] = useState(true);
+    const [authLoading, setAuthLoading] = useState(true);
 
-  useEffect(() => {
-    const token = isLogin();
-    if (!token) {
-      return;
+    useEffect(() => {
+        const token = isLogin();
+        if (!token) {
+            return;
+        }
+
+        // axios.post(`http://localhost:4000/verify?token=${token}`).then(response => {
+        axios.post(`http://localhost:4000/login`).then(response => {
+            setUserSession(response.data.token, response.data.user);
+            setAuthLoading(false);
+            console.log(response)
+        }).catch(error => {
+            removeUserSession();
+            setAuthLoading(false);
+        });
+    }, []);
+
+    if (authLoading && isLogin()) {
+        return <div className="content">Checking Authentication...</div>
     }
 
-    // axios.post(`http://localhost:4000/verify?token=${token}`).then(response => {
-    axios.post(`http://localhost:4000/login`).then(response => {
-      setUserSession(response.data.token, response.data.user);
-      setAuthLoading(false);
-      console.log(response)
-    }).catch(error => {
-      removeUserSession();
-      setAuthLoading(false);
-    });
-  }, []);
-
-  if (authLoading && isLogin()) {
-    return <div className="content">Checking Authentication...</div>
-  }
-
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <div>
-          <div className="header">
-            <NavLink exact activeClassName="active" to="/">Home</NavLink>
-            <NavLink restricted={false} to="/register">Register</NavLink><small>(Access without token only)</small>
-            <NavLink restricted={false} to="/login">Login</NavLink><small>(Access without token only)</small>
-            <NavLink restricted={true} to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
-            <NavLink restricted={true} to="/logout">Logout</NavLink><small>(Access with token only)</small>
-          </div>
-          <div className="content">
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <PublicRoute path="/login" component={Login} />
-              <PublicRoute path="/register" component={Register} />
-              <PrivateRoute path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/logout" component={Logout} />
-            </Switch>
-          </div>
+    return (
+        <div className="App">
+            <BrowserRouter>
+                <div>
+                    <div className="header">
+                        <NavLink exact activeClassName="active" to="/">Home</NavLink>
+                        <NavLink restricted={false} to="/register">Register</NavLink><small>(Access without token only)</small>
+                        <NavLink restricted={false} to="/login">Login</NavLink><small>(Access without token only)</small>
+                        <NavLink restricted={true} to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
+                        <NavLink restricted={true} to="/logout">Logout</NavLink><small>(Access with token only)</small>
+                    </div>
+                    <div className="content">
+                        <Switch>
+                            <Route exact path="/" component={Home} />
+                            <PublicRoute path="/login" component={Login} />
+                            <PublicRoute path="/register" component={Register} />
+                            <PrivateRoute path="/dashboard" component={Dashboard} />
+                            <PrivateRoute path="/logout" component={Logout} />
+                        </Switch>
+                    </div>
+                </div>
+            </BrowserRouter>
         </div>
-      </BrowserRouter>
-    </div>
-  );
+    );
 }
 
 export default App;

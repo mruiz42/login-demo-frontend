@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const SERVER = process.env.REACT_APP_API_URL;
-console.log(SERVER)
-console.log(process.env)
 
 function Register(props) {
     const [loading, setLoading] = useState(false);

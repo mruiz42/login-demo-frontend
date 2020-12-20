@@ -4,8 +4,6 @@ import { setUserSession } from './Utils/Common';
 
 const SERVER = process.env.REACT_APP_API_URL;
 
-console.log(SERVER)
-console.log(process.env)
 function Login(props) {
   const [loading, setLoading] = useState(false);
   const email = useFormInput('');
@@ -16,15 +14,16 @@ function Login(props) {
   const handleLogin = () => {
     setError(null);
     setLoading(true);
-    axios.post(SERVER + '/login', { email: email.value, password: password.value })
-        .then(response => { setLoading(false);
-        setUserSession(response.data.token, response.data.user);
-        props.history.push('/dashboard');
+    axios.post(SERVER + '/login', { email: email.value, password: password.value }, {withCredentials: true})
+        .then(response => {
+            setLoading(false);
+            setUserSession(response.data.token, response.data.user);
+            props.history.push('/dashboard');
     })
         .catch(error => {
         setLoading(false);
-        // TODO bandaid fix after &&
-        if (error.response.status === 403 && error.response !== undefined) {
+        // TODO bandaid fix before &&
+        if (error.response !== undefined && error.response.status === 403) {
             setError(error.response.data.message);
         }
         else {
