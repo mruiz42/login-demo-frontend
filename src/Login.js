@@ -15,16 +15,18 @@ function Login(props) {
     setError(null);
     setLoading(true);
     axios.post(SERVER + '/login', { email: email.value, password: password.value }, {withCredentials: true})
-        .then(response => {
+        .then(res => {
             setLoading(false);
-            setUserSession(response.data.token, response.data.user);
+            console.log(res)
+
+            setUserSession(res.data.token, res.data.user);
             props.history.push('/dashboard');
     })
-        .catch(error => {
+        .catch(e => {
         setLoading(false);
         // TODO bandaid fix before &&
-        if (error.response !== undefined && error.response.status === 403) {
-            setError(error.response.data.message);
+        if (e.response !== undefined && e.response.status === 403) {
+            setError(e.response.data.message);
         }
         else {
             setError("Something went wrong. Please try again later.");

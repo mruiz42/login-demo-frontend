@@ -11,24 +11,30 @@ import PublicRoute from './Utils/PublicRoute';
 import { isLogin, removeUserSession, setUserSession } from './Utils/Common';
 require('dotenv').config();
 
+const SERVER = process.env.REACT_APP_API_URL;
+
 function App() {
     const [authLoading, setAuthLoading] = useState(true);
 
     useEffect(() => {
-        const token = isLogin();
-        if (!token) {
+        const jwt = isLogin();
+
+        if (!jwt) {
             return;
         }
-
-    axios.post(`http://localhost:4000/verify?token=${token}`).then(response => {
-      setUserSession(response.data.token, response.data.user);
-      setAuthLoading(false);
-      console.log(response)
-    }).catch(error => {
-      removeUserSession();
-      setAuthLoading(false);
-    });
-  }, []);
+        const jwt_json = JSON.parse(jwt)
+        const xsrfToken = jwt_json.xsrfToken
+        axios.post(SERVER + '/verify', {token: jwt}, {headers: {
+            'x-xsrf-token': xsrfToken
+            }}).then(response => {
+            setUserSession(jwt_json, response.data.user);
+            setAuthLoading(false);
+            console.log(response)
+        }).catch(error => {
+            removeUserSession();
+            setAuthLoading(false);
+        });
+    }, []);
 
     if (authLoading && isLogin()) {
         return <div className="content">Checking Authentication...</div>
