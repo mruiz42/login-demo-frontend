@@ -13,13 +13,7 @@ function Register(props) {
     const [error, setError] = useState(null);
 
     const validEmail = (emailAddr) => {
-        if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(emailAddr))
-        {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(emailAddr);
     }
 
     const validUsername = (username) => {

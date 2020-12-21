@@ -20,16 +20,15 @@ function App() {
             return;
         }
 
-        // axios.post(`http://localhost:4000/verify?token=${token}`).then(response => {
-        axios.post(`http://localhost:4000/login`).then(response => {
-            setUserSession(response.data.token, response.data.user);
-            setAuthLoading(false);
-            console.log(response)
-        }).catch(error => {
-            removeUserSession();
-            setAuthLoading(false);
-        });
-    }, []);
+    axios.post(`http://localhost:4000/verify?token=${token}`).then(response => {
+      setUserSession(response.data.token, response.data.user);
+      setAuthLoading(false);
+      console.log(response)
+    }).catch(error => {
+      removeUserSession();
+      setAuthLoading(false);
+    });
+  }, []);
 
     if (authLoading && isLogin()) {
         return <div className="content">Checking Authentication...</div>
