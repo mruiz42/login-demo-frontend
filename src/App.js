@@ -8,7 +8,7 @@ import Register from './Register';
 import Logout from './Logout';
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
-import { isLogin, removeUserSession, setUserSession } from './Utils/Common';
+import { isLogin, removeUserSession } from './Utils/Common';
 require('dotenv').config();
 
 const SERVER = process.env.REACT_APP_API_URL;
@@ -17,23 +17,16 @@ function App() {
     const [authLoading, setAuthLoading] = useState(true);
 
     useEffect(() => {
-        const jwt = isLogin();
-
-        if (!jwt) {
-            return;
+        if (document.cookie) {
+            axios.post(SERVER + '/verify', {withCredentials: true, headers {Authorization: `Bearer ${}`}})
+                .then(response => {
+                    setAuthLoading(false);
+                })
+                .catch(error => {
+                    removeUserSession();
+                    setAuthLoading(false);
+                });
         }
-        const jwt_json = JSON.parse(jwt)
-        const xsrfToken = jwt_json.xsrfToken
-        axios.post(SERVER + '/verify', {token: jwt}, {headers: {
-            'x-xsrf-token': xsrfToken
-            }}).then(response => {
-            setUserSession(jwt_json, response.data.user);
-            setAuthLoading(false);
-            console.log(response)
-        }).catch(error => {
-            removeUserSession();
-            setAuthLoading(false);
-        });
     }, []);
 
     if (authLoading && isLogin()) {

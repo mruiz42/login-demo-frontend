@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { setUserSession } from './Utils/Common';
+// import { setUserSession } from './Utils/Common';
 
 const SERVER = process.env.REACT_APP_API_URL;
 
@@ -18,19 +18,17 @@ function Login(props) {
         .then(res => {
             setLoading(false);
             console.log(res)
-
-            setUserSession(res.data.token, res.data.user);
             props.history.push('/dashboard');
     })
         .catch(e => {
-        setLoading(false);
-        // TODO bandaid fix before &&
-        if (e.response !== undefined && e.response.status === 403) {
-            setError(e.response.data.message);
-        }
-        else {
-            setError("Something went wrong. Please try again later.");
-        }
+            setLoading(false);
+            // TODO bandaid fix before &&
+            if (e.response !== undefined && e.response.status === 403) {
+                setError(e.response.data.message);
+            }
+            else {
+                setError("Something went wrong. Please try again later.");
+            }
     });
   }
 
