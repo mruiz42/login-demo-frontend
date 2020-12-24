@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import {setUserSession} from "./Utils/Common";
 // import { setUserSession } from './Utils/Common';
 
 const SERVER = process.env.REACT_APP_API_URL;
@@ -17,17 +18,18 @@ function Login(props) {
     axios.post(SERVER + '/login', { email: email.value, password: password.value }, {withCredentials: true})
         .then(res => {
             setLoading(false);
-            console.log(res)
-            props.history.push('/dashboard');
+            const session = res.data
+            setUserSession(session)
+            props.history.push('/dashboard')
     })
         .catch(e => {
             setLoading(false);
             // TODO bandaid fix before &&
-            if (e.response !== undefined && e.response.status === 403) {
+            if (e.response !== undefined && e.response.status === 401) {
                 setError(e.response.data.message);
             }
             else {
-                setError("Something went wrong. Please try again later.");
+                setError(e.response.data.message);
             }
     });
   }

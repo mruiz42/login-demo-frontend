@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
+import {Cookies} from 'react-cookies';
 import axios from 'axios';
 import Login from './Login';
 import Dashboard from './Dashboard';
@@ -8,7 +9,7 @@ import Register from './Register';
 import Logout from './Logout';
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
-import { isLogin, removeUserSession } from './Utils/Common';
+import { isLogin, removeUserSession, setUserSession} from './Utils/Common';
 require('dotenv').config();
 
 const SERVER = process.env.REACT_APP_API_URL;
@@ -17,16 +18,24 @@ function App() {
     const [authLoading, setAuthLoading] = useState(true);
 
     useEffect(() => {
-        if (document.cookie) {
-            axios.post(SERVER + '/verify', {withCredentials: true, headers {Authorization: `Bearer ${}`}})
-                .then(response => {
-                    setAuthLoading(false);
-                })
-                .catch(error => {
-                    removeUserSession();
-                    setAuthLoading(false);
-                });
+        const isLogged = isLogin();
+        if (!isLogged) {
+            return;
         }
+        setAuthLoading(true);
+        const transport = axios.create({withCredentials: true});
+        transport.post(SERVER + '/verify')
+            .then(response => {
+                setUserSession(response)
+                setAuthLoading(false);
+            })
+            .catch(error => {
+                console.log(error)
+                console.log('removed')
+                removeUserSession();
+                setAuthLoading(false);
+            });
+
     }, []);
 
     if (authLoading && isLogin()) {
