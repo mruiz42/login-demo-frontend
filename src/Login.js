@@ -29,7 +29,8 @@ function Login(props) {
                 setError(e.response.data.message);
             }
             else {
-                setError(e.response.data.message);
+                return false;
+                // setError(e.response.data.message);
             }
     });
   }

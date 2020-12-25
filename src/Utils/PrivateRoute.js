@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { isLogin } from './Common';
+import { isLogin, verifySession } from './Common';
 
 const PrivateRoute = ({component: Component, auth, ...rest}) => {
   return (
@@ -8,7 +8,7 @@ const PrivateRoute = ({component: Component, auth, ...rest}) => {
       // Show the component only when the user is logged in
       // Otherwise, redirect the user to /signin page
       <Route {...rest} render={props => (
-          auth ?
+          isLogin() ?
               <Component {...props} />
               : <Redirect to="/login" />
       )} />

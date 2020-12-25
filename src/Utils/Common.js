@@ -21,16 +21,12 @@ export const removeUserSession = () => {
 
 export const verifySession = () => {
     const transport = axios.create({withCredentials: true});
-
     transport.post(SERVER + '/verify')
         .then(response => {
             console.log(response)
             return true
         })
-        .error(e => {
-            console.log(e)
-            return false;
-        });
+
 }
 // set the token and user from the session storage
 export const setUserSession = (session) => {

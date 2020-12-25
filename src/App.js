@@ -20,9 +20,12 @@ function App() {
     const [isAuth, setIsAuth] = useState(false)
     useEffect(() => {
         setAuthLoading(true);
+        const sid = isLogin();
+        if (!sid) {
+            return;
+        }
         const verification = async () => {
             const transport = axios.create({withCredentials: true});
-
             transport.post(SERVER + '/verify')
                 .then(response => {
                     setUserSession(response);
@@ -40,10 +43,10 @@ function App() {
                     // return <Redirect to={'/login'} />
                 });
         }
-        verification();
+        verification()
     }, []);
 
-    if (authLoading) {
+    if (authLoading && isLogin()) {
         return <div className="content">Checking Authentication...</div>
     }
 
