@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
+import {Redirect} from 'react-router-dom'
 import {Cookies} from 'react-cookies';
 import axios from 'axios';
 import Login from './Login';
@@ -16,29 +17,33 @@ const SERVER = process.env.REACT_APP_API_URL;
 
 function App() {
     const [authLoading, setAuthLoading] = useState(true);
-
+    const [isAuth, setIsAuth] = useState(false)
     useEffect(() => {
-        const isLogged = isLogin();
-        if (!isLogged) {
-            return;
-        }
         setAuthLoading(true);
-        const transport = axios.create({withCredentials: true});
-        transport.post(SERVER + '/verify')
-            .then(response => {
-                setUserSession(response)
-                setAuthLoading(false);
-            })
-            .catch(error => {
-                console.log(error)
-                console.log('removed')
-                removeUserSession();
-                setAuthLoading(false);
-            });
+        const verification = async () => {
+            const transport = axios.create({withCredentials: true});
 
+            transport.post(SERVER + '/verify')
+                .then(response => {
+                    setUserSession(response);
+                    setIsAuth(true);
+                    setAuthLoading(false);
+                    return true;
+                })
+                .catch(error => {
+                    console.log(error)
+                    console.log('removed')
+                    removeUserSession();
+                    setIsAuth(false)
+                    setAuthLoading(false);
+                    return false;
+                    // return <Redirect to={'/login'} />
+                });
+        }
+        verification();
     }, []);
 
-    if (authLoading && isLogin()) {
+    if (authLoading) {
         return <div className="content">Checking Authentication...</div>
     }
 
@@ -48,18 +53,18 @@ function App() {
                 <div>
                     <div className="header">
                         <NavLink exact activeClassName="active" to="/">Home</NavLink>
-                        <NavLink restricted={false} to="/register">Register</NavLink><small>(Access without token only)</small>
-                        <NavLink restricted={false} to="/login">Login</NavLink><small>(Access without token only)</small>
-                        <NavLink restricted={true} to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
-                        <NavLink restricted={true} to="/logout">Logout</NavLink><small>(Access with token only)</small>
+                        <NavLink restrict={false} to="/register">Register</NavLink><small>(Access without token only)</small>
+                        <NavLink restrict={false} to="/login">Login</NavLink><small>(Access without token only)</small>
+                        <NavLink restrict={true} to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
+                        <NavLink restrict={true} to="/logout">Logout</NavLink><small>(Access with token only)</small>
                     </div>
                     <div className="content">
                         <Switch>
                             <Route exact path="/" component={Home} />
-                            <PublicRoute path="/login" component={Login} />
-                            <PublicRoute path="/register" component={Register} />
-                            <PrivateRoute path="/dashboard" component={Dashboard} />
-                            <PrivateRoute path="/logout" component={Logout} />
+                            <PublicRoute path="/login" component={Login} restrict={false} auth={isAuth} />
+                            <PublicRoute path="/register" component={Register} restrict={false} auth={isAuth} />
+                            <PrivateRoute path="/dashboard" component={Dashboard} auth={isAuth} />
+                            <PrivateRoute path="/logout" component={Logout} auth={isAuth} />
                         </Switch>
                     </div>
                 </div>
