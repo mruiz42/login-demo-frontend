@@ -10,7 +10,7 @@ import Register from './Register';
 import Logout from './Logout';
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
-import { isLogin, removeUserSession, setUserSession} from './Utils/Common';
+import {isLogin, removeUserSession, setUserSession, verifySession} from './Utils/Common';
 require('dotenv').config();
 
 const SERVER = process.env.REACT_APP_API_URL;
@@ -24,27 +24,17 @@ function App() {
         if (!sid) {
             return;
         }
-        const verification = async () => {
-            const transport = axios.create({withCredentials: true});
-            transport.post(SERVER + '/verify')
-                .then(response => {
-                    setUserSession(response);
-                    setIsAuth(true);
-                    setAuthLoading(false);
-                    return true;
-                })
-                .catch(error => {
-                    console.log(error)
-                    console.log('removed')
-                    removeUserSession();
-                    setIsAuth(false)
-                    setAuthLoading(false);
-                    return false;
-                    // return <Redirect to={'/login'} />
-                });
-        }
-        verification()
-    }, []);
+        verifySession().then(resp => {
+            setAuthLoading(false)
+            setIsAuth(true)
+            return true;
+        })
+            .catch(e=>{
+                setAuthLoading(false)
+                setIsAuth(false)
+                return false
+            })
+        }, []);
 
     if (authLoading && isLogin()) {
         return <div className="content">Checking Authentication...</div>

@@ -15,17 +15,25 @@ export const isLogin = () => {
 
 // remove the token and user from the session storage
 export const removeUserSession = () => {
-
     sessionStorage.removeItem('user');
 }
 
-export const verifySession = () => {
-    const transport = axios.create({withCredentials: true});
-    transport.post(SERVER + '/verify')
-        .then(response => {
-            console.log(response)
-            return true
-        })
+export const verifySession = async () => {
+    const verification = async () => {
+        const transport = axios.create({withCredentials: true});
+        transport.post(SERVER + '/verify')
+            .then(response => {
+                setUserSession(response);
+                return true;
+            })
+            .catch(error => {
+                console.log(error)
+                console.log('removed')
+                removeUserSession();
+                return false;
+                // return <Redirect to={'/login'} />
+            });
+    }
 
 }
 // set the token and user from the session storage

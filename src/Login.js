@@ -25,7 +25,7 @@ function Login(props) {
         .catch(e => {
             setLoading(false);
             // TODO bandaid fix before &&
-            if (e.response !== undefined && e.response.status === 401) {
+            if (e.response.status === 401) {
                 setError(e.response.data.message);
             }
             else {
