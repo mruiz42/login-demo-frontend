@@ -24,13 +24,13 @@ export const verifySession = async () => {
         transport.post(SERVER + '/verify')
             .then(response => {
                 setUserSession(response);
-                return true;
+                return response
             })
             .catch(error => {
                 console.log(error)
                 console.log('removed')
                 removeUserSession();
-                return false;
+                return error;
                 // return <Redirect to={'/login'} />
             });
     }

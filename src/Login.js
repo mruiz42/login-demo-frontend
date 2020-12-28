@@ -6,10 +6,10 @@ import {setUserSession} from "./Utils/Common";
 const SERVER = process.env.REACT_APP_API_URL;
 
 function Login(props) {
-  const [loading, setLoading] = useState(false);
-  const email = useFormInput('');
-  const password = useFormInput('');
-  const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const email = useFormInput('');
+    const password = useFormInput('');
+    const [error, setError] = useState(null);
 
   // handle button click of login form
   const handleLogin = () => {
@@ -19,7 +19,7 @@ function Login(props) {
         .then(res => {
             setLoading(false);
             const session = res.data
-            setUserSession(session)
+            setUserSession(session);
             props.history.push('/dashboard')
     })
         .catch(e => {

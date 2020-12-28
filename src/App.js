@@ -15,25 +15,34 @@ require('dotenv').config();
 
 const SERVER = process.env.REACT_APP_API_URL;
 
+
 function App() {
     const [authLoading, setAuthLoading] = useState(true);
     const [isAuth, setIsAuth] = useState(false)
     useEffect(() => {
         setAuthLoading(true);
-        const sid = isLogin();
-        if (!sid) {
-            return;
-        }
-        verifySession().then(resp => {
-            setAuthLoading(false)
-            setIsAuth(true)
-            return true;
-        })
-            .catch(e=>{
+        // const loginState = isLogin();
+        // if (!loginState) {
+        //     return;
+        // }
+
+        const transport = axios.create({withCredentials: true});
+        transport.post(SERVER + '/verify')
+            .then(response => {
+                setUserSession(response);
+                setIsAuth(true)
                 setAuthLoading(false)
-                setIsAuth(false)
-                return false
+
             })
+            .catch(error => {
+                console.log(error)
+                console.log('removed')
+                removeUserSession();
+                setIsAuth(false)
+                setAuthLoading(false)
+                // return <Redirect to={'/login'} />
+            });
+
         }, []);
 
     if (authLoading && isLogin()) {

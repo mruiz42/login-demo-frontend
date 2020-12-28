@@ -6,10 +6,7 @@ const SERVER = process.env.REACT_APP_API_URL;
 
 function Dashboard(props) {
     let user = getUser();
-  verifySession().then( resp => {
-      user = resp;
-      }
-  )
+
 
   // handle click event of logout button
   const handleLogout = () => {
