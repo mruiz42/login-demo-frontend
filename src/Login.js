@@ -20,6 +20,7 @@ function Login(props) {
             setLoading(false);
             const session = res.data
             setUserSession(session);
+
             props.history.push('/dashboard')
     })
         .catch(e => {

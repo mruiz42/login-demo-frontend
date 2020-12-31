@@ -14,11 +14,12 @@ function Dashboard(props) {
       const transport = axios.create({withCredentials: true});
       transport.post(SERVER + '/logout')
           .then(response => {
-              console.log(response)
+              sessionStorage.removeItem('user')
+              console.log(response);
               props.history.push('/login');
           })
           .catch(error => {
-              console.log(error)
+              console.log(error);
           });
 
   }

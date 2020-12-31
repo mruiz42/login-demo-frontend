@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { isLogin, verifySession } from './Common';
 
-const PrivateRoute = ({component: Component, auth, ...rest}) => {
+const PrivateRoute = ({component: Component, ...rest}) => {
   return (
 
       // Show the component only when the user is logged in

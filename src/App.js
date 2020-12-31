@@ -21,27 +21,16 @@ function App() {
     const [isAuth, setIsAuth] = useState(false)
     useEffect(() => {
         setAuthLoading(true);
-        // const loginState = isLogin();
-        // if (!loginState) {
-        //     return;
-        // }
-
-        const transport = axios.create({withCredentials: true});
-        transport.post(SERVER + '/verify')
-            .then(response => {
-                setUserSession(response);
-                setIsAuth(true)
-                setAuthLoading(false)
-
-            })
-            .catch(error => {
-                console.log(error)
-                console.log('removed')
-                removeUserSession();
-                setIsAuth(false)
-                setAuthLoading(false)
-                // return <Redirect to={'/login'} />
-            });
+        const loginState = isLogin();
+        if (!loginState) {
+            return;
+        }
+        verifySession().then(re => {
+            console.log(re)
+            setUserSession(re.data)
+            setAuthLoading(false)
+            setIsAuth(true)
+        })
 
         }, []);
 
