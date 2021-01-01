@@ -1,5 +1,6 @@
 // return the user data from the session storage
 import axios from "axios";
+
 const transport = axios.create({withCredentials: true});
 const SERVER = process.env.REACT_APP_API_URL;
 
@@ -20,19 +21,19 @@ export const removeUserSession = () => {
 }
 
 export async function verifySession() {
-    const result = await transport.post(SERVER + '/verify')
+    return await transport.post(SERVER + '/verify')
         .then(response => {
-            setUserSession(response);
             return response
         })
         .catch(error => {
+            transport.post(SERVER + '/logout')
             console.log(error)
             console.log('removed')
             removeUserSession();
             return error;
-        });
-    return result
+        })
 }
+
 // set the token and user from the session storage
 export const setUserSession = (session) => {
     console.log(session.username);

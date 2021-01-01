@@ -25,13 +25,19 @@ function App() {
         if (!loginState) {
             return;
         }
-        verifySession().then(re => {
-            console.log(re)
-            setUserSession(re.data)
-            setAuthLoading(false)
-            setIsAuth(true)
-        })
-
+        verifySession()
+            .then(re => {
+                console.log(re)
+                setUserSession(re.data)             // This triggers the error below, not sure if this is ok (spoof sid)
+                setAuthLoading(false)
+                setIsAuth(true)
+            })
+            .catch(e => {
+                console.log(e)
+                removeUserSession()
+                setAuthLoading(false)
+                setIsAuth(false)
+            })
         }, []);
 
     if (authLoading && isLogin()) {
