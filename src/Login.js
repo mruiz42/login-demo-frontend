@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, setState } from 'react';
 import axios from 'axios';
-import {setUserSession} from "./Utils/Common";
+import {setUserSession, verifySession} from "./Utils/Common";
 // import { setUserSession } from './Utils/Common';
 
 const SERVER = process.env.REACT_APP_API_URL;
@@ -13,15 +13,17 @@ function Login(props) {
 
   // handle button click of login form
   const handleLogin = () => {
-    setError(null);
-    setLoading(true);
-    axios.post(SERVER + '/login', { email: email.value, password: password.value }, {withCredentials: true})
-        .then(res => {
-            setLoading(false);
-            const session = res.data
-            setUserSession(session);
-
-            props.history.push('/dashboard')
+      setError(null);
+      setLoading(true);
+      axios.post(SERVER + '/login', { email: email.value, password: password.value }, {withCredentials: true})
+          .then(res => {
+              verifySession()
+                  .then(r => {
+                      setLoading(false);
+                      const session = res.data
+                      setUserSession(session);
+                      props.history.push('/dashboard')
+                })
     })
         .catch(e => {
             setLoading(false);

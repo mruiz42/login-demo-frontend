@@ -1,0 +1,247 @@
+div.App{
+    height: 100vh;
+    background-color: #1c1e23;
+}
+
+.App {
+    text-align: center;
+}
+
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.App-link {
+    color: #61dafb;
+}
+
+.body {
+    color: #d1cd96;
+}
+/*
+NavMenu is the bar on the top of the page that displays navigation links.
+Height: 54px
+ */
+.NavBar{
+    background-color: #0062cc;
+    height: 54px;
+}
+
+.navbar-expand {
+    justify-content:right;
+}
+
+.Logo {
+    position: sticky;
+    left: 64px;
+    color: white;
+}
+
+/* dropdown menu stuff */
+
+.dropdown-menu.show {
+    background: #181a1b;
+    opacity:0.95;
+}
+/*What does > mean in css*/
+.dropdown-menu > a:hover {
+    color: antiquewhite;
+    background-image: none;
+    background-color: #0062cc;
+    opacity:0.95;
+}
+
+.dropdown-item {
+    color: white;
+    background: #181a1b;
+}
+
+/*VocabCardDeck is the card object that has deck information*/
+
+div#root {
+    background-color: #1c1e23;
+}
+
+div.card {
+    alignment: center;
+}
+div.card-body{
+    color: #d1b985;
+}
+.card-deck {
+    margin: 0px;
+}
+
+/*SideMenu*/
+
+html,
+body {
+    margin: 0;
+}
+
+#App {
+    font-family: sans-serif;
+
+    /* Give app full page to work with */
+    height: 100vh;
+}
+
+#page-wrap {
+    text-align: center;
+
+    /* Prevent sidebar from showing a scrollbar on page */
+    overflow: auto;
+}
+
+/* Individual item */
+div.bm-menu {
+    opacity: 0.95;
+}
+.bm-item {
+    display: inline-block;
+
+    /* Our sidebar item styling */
+    text-decoration: none;
+    margin-bottom: 10px;
+    color: #d1d1d1;
+    transition: color 0.2s;
+}
+
+/* Change color on hover */
+.bm-item:hover {
+    color: white;
+}
+
+/* The rest copied directly from react-burger-menu docs */
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+    width: 24px;
+    height: 20px;
+    position: sticky;
+    left: 24px;
+    top: 16px;
+
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+    background: #373a47;
+    position: sticky;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+    height: 24px;
+    width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+    background: #bdc3c7;
+}
+
+/* General sidebar styles */
+.bm-menu {
+    background: #373a47;
+    font-size: 1.15em;
+}
+
+.bm-menu-wrap {
+    position: fixed;
+    left:0;
+    top:0;
+}
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+    fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+    padding: 54px 0 0;
+    color: #b8b7ad;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/*UserMenu*/
+div.UserMenu {
+    margin: auto 0 auto auto;
+}
+.UserName {
+    color: white;
+    display: inline;
+}
+a {
+    color: white;
+}
+.Register-button {
+    float:right;
+    margin-right: 10px;
+
+
+}
+.Sign-in {
+    margin-right: 10px;
+    float:right;
+    position: center;
+
+}
+.btn {
+    padding: 6px;
+    margin: 0px 6px 0px 6px;
+}
+
+.btn-primary {
+    background-color: #0062cc !important;
+    border-color: #0062cc !important;
+    padding: 4px !important;
+}
+
+/*TypingGame*/
+div.Input.input-group {
+    position: fixed;
+    width: 50%;
+    align-items: center;
+    display: flex;
+    border: 4px;
+    padding: 12px;
+    justify-content: center;
+}
+
+:root {
+    background-color: #1c1e23;
+}
+
+
+
+/* Sign in */
+.SignInPage {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+    margin-left: 10vw;
+    margin-right:10vw;
+    border: 1px white;
+    border-style: solid;
+    padding: 80px;
+    border-radius: 20px;
+
+}
+.form-group {
+    margin: 0 auto;
+    width: 80%;
+}

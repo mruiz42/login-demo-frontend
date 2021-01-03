@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState, setState} from 'react';
 import { getUser, removeUserSession } from './Utils/Common';
 
 function Logout(props) {

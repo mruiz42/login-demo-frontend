@@ -17,16 +17,20 @@ export const isLogin = () => {
 
 // remove the token and user from the session storage
 export const removeUserSession = () => {
-    sessionStorage.removeItem('user');
+    transport.post(SERVER + '/logout')
+        .then(resp => {
+            sessionStorage.removeItem('user');
+
+        })
 }
 
-export async function verifySession() {
+export async function verifySession(callback) {
     return await transport.post(SERVER + '/verify')
         .then(response => {
             return response
         })
         .catch(error => {
-            transport.post(SERVER + '/logout')
+            transport.post(SERVER + '/logout');
             console.log(error)
             console.log('removed')
             removeUserSession();
